@@ -4,15 +4,11 @@
 # clear all objects from memory
 rm(list = ls())
 
-setwd('/home/sujin/Dropbox/telstra')
+setwd('/home/user/src/telstra')
 
 library(xgboost)
 library(caret)
 library(e1071)
-
-n2logscale <- function(n){
-  return(log(1+n))
-}
 
 source("tel_final_model.R")
 
@@ -67,5 +63,3 @@ clf <- xgboost(data        = data.matrix(trainset[,feature.names]),
 
 testset$pred_xgb <- predict(clf, data.matrix(testset[,feature.names]))
 write.csv(testset[testset$tr==0, c("id", "pred_xgb")], file="submission/pred_xgb_3.csv")
-# submitted on 1/6/2016
-# Kaggle score of 8.57956
