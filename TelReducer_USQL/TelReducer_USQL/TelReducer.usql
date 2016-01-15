@@ -1,0 +1,57 @@
+﻿/*
+1/15/2016
+Reducer designed to reduce and discretize the dataset.
+The input is expected to be already merged.
+*/
+
+DECLARE @INPUT_STREAM string = "/data/tel_small.csv"; // Unittest input
+DECLARE @OUTPUT_STREAM string = "/Output/output.csv"; // Unittest output
+//DECLARE @INPUT_STREAM string = "/data/tel_merged.csv";
+//DECLARE @OUTPUT_STREAM string = "/Output/tel_reduced.csv";
+
+DECLARE @EventType string = @"/data/EventType.csv"; 
+DECLARE @LogFeature string = @"/data/LogFeature.csv";
+DECLARE @ResType string = @"/data/ResType.csv";
+DECLARE @SeverityType string = @"/data/SeverityType.csv";
+DECLARE @Location string = @"/data/Location.csv";
+
+DEPLOY RESOURCE @EventType;
+DEPLOY RESOURCE @LogFeature;
+DEPLOY RESOURCE @ResType;
+DEPLOY RESOURCE @SeverityType;
+DEPLOY RESOURCE @Location;
+
+@dataset =
+    EXTRACT rn  string,  // Row Number
+            id  string,  // ID
+            loc  string, // Location
+            fs  string,  // FaultSeverity
+            et  string,  // EventType
+            lf  string,  // LogFeature
+            vol  string, // Volume
+            rt  string,  // ResourceType
+            st  string,  // SeverityType
+            tr  string   // Train flag (0/1) Train and Test data are combined to a single dataset
+    FROM @INPUT_STREAM
+    USING Extractors.Csv();
+
+@filtered =
+    SELECT *
+    FROM @dataset
+    WHERE id != "id";
+
+@red =
+REDUCE @filtered
+ON id
+PRODUCE 
+    id string, loc string, fs string, tr string, st string,
+    lf_1 string, lf_2 string, lf_3 string, lf_4 string, lf_5 string, lf_6 string, lf_7 string, lf_8 string, lf_9 string, lf_10 string, lf_11 string, lf_12 string, lf_13 string, lf_14 string, lf_15 string, lf_16 string, lf_17 string, lf_18 string, lf_19 string, lf_20 string, lf_21 string, lf_22 string, lf_23 string, lf_24 string, lf_25 string, lf_26 string, lf_27 string, lf_28 string, lf_29 string, lf_30 string, lf_31 string, lf_32 string, lf_33 string, lf_34 string, lf_35 string, lf_36 string, lf_37 string, lf_38 string, lf_39 string, lf_40 string, lf_41 string, lf_42 string, lf_43 string, lf_44 string, lf_45 string, lf_46 string, lf_47 string, lf_48 string, lf_49 string, lf_50 string, lf_51 string, lf_52 string, lf_53 string, lf_54 string, lf_55 string, lf_56 string, lf_57 string, lf_58 string, lf_59 string, lf_60 string, lf_61 string, lf_62 string, lf_63 string, lf_64 string, lf_65 string, lf_66 string, lf_67 string, lf_68 string, lf_69 string, lf_70 string, lf_71 string, lf_72 string, lf_73 string, lf_74 string, lf_75 string, lf_76 string, lf_77 string, lf_78 string, lf_79 string, lf_80 string, lf_81 string, lf_82 string, lf_83 string, lf_84 string, lf_85 string, lf_86 string, lf_87 string, lf_88 string, lf_89 string, lf_90 string, lf_91 string, lf_92 string, lf_93 string, lf_94 string, lf_95 string, lf_96 string, lf_97 string, lf_98 string, lf_99 string, lf_100 string, lf_101 string, lf_102 string, lf_103 string, lf_104 string, lf_105 string, lf_106 string, lf_107 string, lf_108 string, lf_109 string, lf_110 string, lf_111 string, lf_112 string, lf_113 string, lf_114 string, lf_115 string, lf_116 string, lf_117 string, lf_118 string, lf_119 string, lf_120 string, lf_121 string, lf_122 string, lf_123 string, lf_124 string, lf_125 string, lf_126 string, lf_127 string, lf_128 string, lf_129 string, lf_130 string, lf_131 string, lf_132 string, lf_133 string, lf_134 string, lf_135 string, lf_136 string, lf_137 string, lf_138 string, lf_139 string, lf_140 string, lf_141 string, lf_142 string, lf_143 string, lf_144 string, lf_145 string, lf_146 string, lf_147 string, lf_148 string, lf_149 string, lf_150 string, lf_151 string, lf_152 string, lf_153 string, lf_154 string, lf_155 string, lf_156 string, lf_157 string, lf_158 string, lf_159 string, lf_160 string, lf_161 string, lf_162 string, lf_163 string, lf_164 string, lf_165 string, lf_166 string, lf_167 string, lf_168 string, lf_169 string, lf_170 string, lf_171 string, lf_172 string, lf_173 string, lf_174 string, lf_175 string, lf_176 string, lf_177 string, lf_178 string, lf_179 string, lf_180 string, lf_181 string, lf_182 string, lf_183 string, lf_184 string, lf_185 string, lf_186 string, lf_187 string, lf_188 string, lf_189 string, lf_190 string, lf_191 string, lf_192 string, lf_193 string, lf_194 string, lf_195 string, lf_196 string, lf_197 string, lf_198 string, lf_199 string, lf_200 string, lf_201 string, lf_202 string, lf_203 string, lf_204 string, lf_205 string, lf_206 string, lf_207 string, lf_208 string, lf_209 string, lf_210 string, lf_211 string, lf_212 string, lf_213 string, lf_214 string, lf_215 string, lf_216 string, lf_217 string, lf_218 string, lf_219 string, lf_220 string, lf_221 string, lf_222 string, lf_223 string, lf_224 string, lf_225 string, lf_226 string, lf_227 string, lf_228 string, lf_229 string, lf_230 string, lf_231 string, lf_232 string, lf_233 string, lf_234 string, lf_235 string, lf_236 string, lf_237 string, lf_238 string, lf_239 string, lf_240 string, lf_241 string, lf_242 string, lf_243 string, lf_244 string, lf_245 string, lf_246 string, lf_247 string, lf_248 string, lf_249 string, lf_250 string, lf_251 string, lf_252 string, lf_253 string, lf_254 string, lf_255 string, lf_256 string, lf_257 string, lf_258 string, lf_259 string, lf_260 string, lf_261 string, lf_262 string, lf_263 string, lf_264 string, lf_265 string, lf_266 string, lf_267 string, lf_268 string, lf_269 string, lf_270 string, lf_271 string, lf_272 string, lf_273 string, lf_274 string, lf_275 string, lf_276 string, lf_277 string, lf_278 string, lf_279 string, lf_280 string, lf_281 string, lf_282 string, lf_283 string, lf_284 string, lf_285 string, lf_286 string, lf_287 string, lf_288 string, lf_289 string, lf_290 string, lf_291 string, lf_292 string, lf_293 string, lf_294 string, lf_295 string, lf_296 string, lf_297 string, lf_298 string, lf_299 string, lf_300 string, lf_301 string, lf_302 string, lf_303 string, lf_304 string, lf_305 string, lf_306 string, lf_307 string, lf_308 string, lf_309 string, lf_310 string, lf_311 string, lf_312 string, lf_313 string, lf_314 string, lf_315 string, lf_316 string, lf_317 string, lf_318 string, lf_319 string, lf_320 string, lf_321 string, lf_322 string, lf_323 string, lf_324 string, lf_325 string, lf_326 string, lf_327 string, lf_328 string, lf_329 string, lf_330 string, lf_331 string, lf_332 string, lf_333 string, lf_334 string, lf_335 string, lf_336 string, lf_337 string, lf_338 string, lf_339 string, lf_340 string, lf_341 string, lf_342 string, lf_343 string, lf_344 string, lf_345 string, lf_346 string, lf_347 string, lf_348 string, lf_349 string, lf_350 string, lf_351 string, lf_352 string, lf_353 string, lf_354 string, lf_355 string, lf_356 string, lf_357 string, lf_358 string, lf_359 string, lf_360 string, lf_361 string, lf_362 string, lf_363 string, lf_364 string, lf_365 string, lf_366 string, lf_367 string, lf_368 string, lf_369 string, lf_370 string, lf_371 string, lf_372 string, lf_373 string, lf_374 string, lf_375 string, lf_376 string, lf_377 string, lf_378 string, lf_379 string, lf_380 string, lf_381 string, lf_382 string, lf_383 string, lf_384 string, lf_385 string, lf_386 string,
+    et_1 string, et_2 string, et_3 string, et_4 string, et_5 string, et_6 string, et_7 string, et_8 string, et_9 string, et_10 string, et_11 string, et_12 string, et_13 string, et_14 string, et_15 string, et_16 string, et_17 string, et_18 string, et_19 string, et_20 string, et_21 string, et_22 string, et_23 string, et_24 string, et_25 string, et_26 string, et_27 string, et_28 string, et_29 string, et_30 string, et_31 string, et_32 string, et_33 string, et_34 string, et_35 string, et_36 string, et_37 string, et_38 string, et_39 string, et_40 string, et_41 string, et_42 string, et_43 string, et_44 string, et_45 string, et_46 string, et_47 string, et_48 string, et_49 string, et_50 string, et_51 string, et_52 string, et_53 string,
+    rt_1 string, rt_2 string, rt_3 string, rt_4 string, rt_5 string, rt_6 string, rt_7 string, rt_8 string, rt_9 string, rt_10 string
+USING new TelReducer_USQL.TelReducer(@EventType , @LogFeature , @ResType , @SeverityType , @Location)
+;
+
+OUTPUT @red
+TO @OUTPUT_STREAM
+USING Outputters.Csv(quoting : false)
+;
